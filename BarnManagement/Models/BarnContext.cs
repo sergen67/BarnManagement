@@ -16,7 +16,7 @@ namespace BarnManagement.WinForms.Models
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            // Temel kurallar; indeksleri migration'da ekleyeceğiz
+            
             modelBuilder.Entity<User>()
                 .Property(x => x.Username).IsRequired().HasMaxLength(50);
 

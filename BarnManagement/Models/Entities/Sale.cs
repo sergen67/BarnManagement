@@ -8,7 +8,6 @@ namespace BarnManagement.WinForms.Models.Entities
         public int Id { get; set; }
         
         public int ProductId { get; set; } // unique
-        //public int ProductType { get; set; }
         public decimal UnitPrice { get; set; }
         public decimal Quantity { get; set; }
         public DateTime SoldAt { get; set; } = DateTime.Now;

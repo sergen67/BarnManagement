@@ -2,7 +2,6 @@
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Serilog;
-using Serilog.Events;
 using System;
 using System.IO;
 using System.Windows.Forms;
@@ -10,41 +9,56 @@ using System.Windows.Forms;
 
 namespace BarnManagement
 {
-    internal static class Program
+   
+    internal class Program
     {
-        public static ServiceProvider Services;
+        public static IServiceProvider Services;
+      
         [STAThread]
         static void Main()
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            
-            var logDir = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Logs");
-            Directory.CreateDirectory(logDir);
+            var services = new ServiceCollection();
+            var logs = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Logs");
+            Directory.CreateDirectory(logs);
 
             Log.Logger = new LoggerConfiguration()
                 .MinimumLevel.Debug()
-                .MinimumLevel.Override("Microsoft", LogEventLevel.Information)
-                .WriteTo.File(Path.Combine(logDir, "log-.txt"), rollingInterval: RollingInterval.Day, shared: true, retainedFileCountLimit: 14,outputTemplate: "[{Timestamp:yyyy-MM-dd HH:mm:ss}] {Level:u4} - {Message:lj}{NewLine}{Exception}")
+                .WriteTo.File(Path.Combine(logs, "log-.txt"),
+                              rollingInterval: RollingInterval.Day,
+                              retainedFileCountLimit: 14,
+                              shared: true,
+                              outputTemplate: "[{Timestamp:yyyy-MM-dd HH:mm:ss}] {Level:u3} {SourceContext} - {Message:lj}{NewLine}{Exception}")
                 .CreateLogger();
 
-            var services = new ServiceCollection();
-                services.AddLogging(builder => { builder.ClearProviders();
-                    builder.AddSerilog(dispose: true);
-                });
+            services.AddLogging(b => { b.ClearProviders(); b.AddSerilog(dispose: true); });
             services.AddTransient<RegisterForm>();
             services.AddTransient<LoginForm>();
             services.AddTransient<MainForm>();
 
-            Services = services.BuildServiceProvider();
-            // DOĞRU
-            var loggerFactory = Services.GetRequiredService<ILoggerFactory>();
-            var logger = loggerFactory.CreateLogger(nameof(Program)); // kategori: "Program"
-            logger.LogInformation("App starting (RegisterForm-only).");
 
-            logger.LogInformation("Application starting...");
+            var provider = services.BuildServiceProvider();
+            Services = provider;
 
-            Application.Run(Services.GetRequiredService<LoginForm>());
+            try
+            {
+                var logger = provider.GetRequiredService<ILogger<Program>>();
+                logger.LogInformation("Uygulama başlıyor.....");
+
+                Application.Run(provider.GetRequiredService<LoginForm>());
+
+            }
+            finally
+            {
+                (provider as IDisposable).Dispose();
+                Log.CloseAndFlush();
+            }
+            
+            
+        
+
+
 
 
         }
