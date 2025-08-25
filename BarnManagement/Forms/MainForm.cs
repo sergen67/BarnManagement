@@ -5,7 +5,6 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using BarnManagement.WinForms.Models;
 using BarnManagement.WinForms.Models.Entities;
-using BarnManagement.Models.Entities;
 
 namespace BarnManagement.Forms
 {
@@ -22,7 +21,7 @@ namespace BarnManagement.Forms
             InitializeComponent();
             _logger = Program.Services.GetRequiredService<ILogger<MainForm>>();
 
-            InitUiDefaults();     // 🔑 combolar/numeric varsayılanları
+            InitUiDefaults();     
             SetupTimer();
             
 
@@ -75,22 +74,18 @@ namespace BarnManagement.Forms
         }
         private void InitUiDefaults()
         {
-            // Tür ve Cinsiyet listeleri
+      
             if (cmbType.Items.Count == 0)
                 cmbType.Items.AddRange(new object[] { "Cow", "Chicken", "Sheep" });
 
             if (cmbGender.Items.Count == 0)
                 cmbGender.Items.AddRange(new object[] { "Female", "Male" });
 
-            // Kullanıcının serbest yazmasını engelle
             cmbType.DropDownStyle = ComboBoxStyle.DropDownList;
             cmbGender.DropDownStyle = ComboBoxStyle.DropDownList;
 
-            // Varsayılan seçim (yoksa)
             if (cmbType.SelectedIndex < 0) cmbType.SelectedIndex = 0;
             if (cmbGender.SelectedIndex < 0) cmbGender.SelectedIndex = 0;
-
-          
         }
 
         private void LoadGrids()
@@ -182,8 +177,6 @@ namespace BarnManagement.Forms
             }
             catch (Exception ex) { _logger.LogError(ex, "AddAnimal failed"); }
         }
-
-
 
         private void btnMarkDead_Click(object sender, EventArgs e)
         {
@@ -325,8 +318,5 @@ namespace BarnManagement.Forms
                 _logger.LogError(ex, "RefreshAnimalCount failed");
             }
         }
-
-
-
     }
 }

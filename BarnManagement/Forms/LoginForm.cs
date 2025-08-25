@@ -18,17 +18,12 @@ namespace BarnManagement.Forms
 
         private void txtUsername_TextChanged(object sender, EventArgs e)
         {
-            
+
         }
-           
-
-     
-
-
         private void linkRegister_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
         {
             var reg = Program.Services.GetRequiredService<RegisterForm>();
-            if(reg.ShowDialog(this) == DialogResult.OK)
+            if (reg.ShowDialog(this) == DialogResult.OK)
             {
                 txtUsername.Text = reg.RegisteredUsername;
                 txtPassword.Focus();
@@ -66,7 +61,7 @@ namespace BarnManagement.Forms
                     main.Initialize(user);
                     Hide();
                     main.Show();
-              
+
                 }
             }
             catch (Exception ex)

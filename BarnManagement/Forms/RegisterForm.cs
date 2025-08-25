@@ -53,7 +53,7 @@ namespace BarnManagement.Forms
                     db.SaveChanges();
                 }
                 RegisteredUsername = username;
-                this.DialogResult = DialogResult.OK;    
+                this.DialogResult = DialogResult.OK;
                 this.Close();
 
             }

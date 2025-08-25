@@ -1,12 +1,11 @@
 ﻿using System;
 
-
 namespace BarnManagement.WinForms.Models.Entities
 {
     public class Sale
     {
         public int Id { get; set; }
-        
+
         public int ProductId { get; set; } // unique
         public decimal UnitPrice { get; set; }
         public decimal Quantity { get; set; }

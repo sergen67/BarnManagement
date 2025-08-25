@@ -15,9 +15,6 @@ namespace BarnManagement.WinForms.Utils
                 return salt;
             }
         }
-
-
-
         public static byte[] HashPassword(string password, byte[] salt)
         {
             using (var sha = SHA256.Create())

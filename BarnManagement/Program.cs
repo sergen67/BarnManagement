@@ -9,11 +9,10 @@ using System.Windows.Forms;
 
 namespace BarnManagement
 {
-   
     internal class Program
     {
         public static IServiceProvider Services;
-      
+
         [STAThread]
         static void Main()
         {
@@ -54,13 +53,6 @@ namespace BarnManagement
                 (provider as IDisposable).Dispose();
                 Log.CloseAndFlush();
             }
-            
-            
-        
-
-
-
-
         }
     }
 }
